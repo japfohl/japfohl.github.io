@@ -1,417 +1,203 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joseph A Pfohl - Principal Software Engineer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-    tailwind.config = {
-      darkMode: 'class',
-    }
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Joseph A. Pfohl - Product Engineer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Warm Neutrals -->
-    <!-- Application Structure Plan: The application is structured as a single-page portfolio with a top navigation bar for quick access to key sections. It begins with a strong summary to capture immediate attention, followed by an interactive skills overview featuring a bar chart for quick visual assessment. The core of the application is an interactive vertical timeline for work experience, allowing users to expand each role for details. This structure was chosen to cater to different user behaviors: the high-level scroller gets key info from the summary and skills chart, while the detail-oriented visitor can dive deep into the interactive timeline. This non-linear, exploratory approach is more engaging than a static document. -->
-    <!-- Visualization & Content Choices: 
-        - Summary: (Goal: Inform) Presented as a hero text block for immediate impact.
-        - Technical Skills: (Goal: Compare/Organize) Presented as categorized lists and a horizontal bar chart via Chart.js. The chart provides a quick visual comparison of proficiency across domains, a more dynamic presentation than a simple list.
-        - Experience: (Goal: Change/Explore) Presented as an interactive timeline built with HTML/CSS/JS. Clicking a role reveals details (progressive disclosure), which keeps the UI clean and encourages user interaction.
-        - Education: (Goal: Inform) A clean, simple list for foundational information.
-        All interactions are built with vanilla JS. This design provides a comprehensive, interactive overview of the resume content.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Inter', sans-serif;
+            color: #1c1917;
+            background: #fafaf9;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
-        .nav-link {
-            transition: color 0.2s;
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
         }
-        .timeline-item-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-in-out;
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
         }
-        .timeline-item.active .timeline-item-content {
-            max-height: 1000px; /* Arbitrary large value */
+        .subtitle {
+            font-size: 1.1rem;
+            color: #57534e;
+            margin-top: 0.25rem;
         }
-        .timeline-dot {
-            transition: border-color 0.2s, background-color 0.2s;
+        h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #44403c;
+            border-bottom: 1px solid #d6d3d1;
+            padding-bottom: 0.4rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
         }
-        .timeline-indicator {
-            transition: transform 0.2s;
+        h3 {
+            font-size: 1rem;
+            font-weight: 600;
         }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 400px;
-            max-height: 50vh;
+        .job { margin-bottom: 1.75rem; }
+        .job-meta {
+            color: #57534e;
+            font-size: 0.9rem;
+            margin-top: 0.1rem;
         }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 450px;
-            }
+        .job-date {
+            color: #78716c;
+            font-size: 0.85rem;
+        }
+        ul {
+            margin-top: 0.5rem;
+            padding-left: 1.25rem;
+        }
+        li {
+            margin-bottom: 0.35rem;
+            font-size: 0.9rem;
+            color: #292524;
+        }
+        .skills-grid {
+            display: grid;
+            gap: 0.5rem;
+        }
+        .skills-grid dt {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .skills-grid dd {
+            font-size: 0.9rem;
+            color: #44403c;
+            margin-bottom: 0.5rem;
+        }
+        .edu { margin-bottom: 0.75rem; }
+        .edu-degree { font-weight: 600; font-size: 0.95rem; }
+        .edu-meta { color: #57534e; font-size: 0.85rem; }
+        footer {
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #d6d3d1;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #78716c;
+        }
+        footer a { color: #57534e; text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        @media (prefers-color-scheme: dark) {
+            body { background: #1c1917; color: #e7e5e4; }
+            h2 { color: #a8a29e; border-color: #44403c; }
+            .subtitle, .job-meta, footer a { color: #a8a29e; }
+            .job-date, .edu-meta, footer { color: #78716c; }
+            li, .skills-grid dd { color: #d6d3d1; }
         }
     </style>
 </head>
-<body class="antialiased bg-stone-100 text-stone-800 dark:bg-stone-900 dark:text-stone-300">
+<body>
+    <div class="container">
+        <header>
+            <h1>Joseph A. Pfohl</h1>
+            <div class="subtitle">Product Engineer</div>
+        </header>
 
-    <header class="bg-stone-50/80 dark:bg-stone-900/80 backdrop-blur-sm sticky top-0 z-50 border-b border-stone-200 dark:border-stone-700">
-        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex items-center">
-                    <span class="font-bold text-xl text-stone-800 dark:text-stone-200">Joseph A Pfohl</span>
-                </div>
-                <div class="flex items-center">
-                    <div class="hidden md:block">
-                        <div id="nav-menu" class="ml-10 flex items-baseline space-x-4">
-                            <a href="#summary" class="nav-link text-stone-600 dark:text-stone-400 hover:text-teal-600 dark:hover:text-teal-500 px-3 py-2 rounded-md text-sm font-medium">Summary</a>
-                            <a href="#skills" class="nav-link text-stone-600 dark:text-stone-400 hover:text-teal-600 dark:hover:text-teal-500 px-3 py-2 rounded-md text-sm font-medium">Skills</a>
-                            <a href="#experience" class="nav-link text-stone-600 dark:text-stone-400 hover:text-teal-600 dark:hover:text-teal-500 px-3 py-2 rounded-md text-sm font-medium">Experience</a>
-                            <a href="#education" class="nav-link text-stone-600 dark:text-stone-400 hover:text-teal-600 dark:hover:text-teal-500 px-3 py-2 rounded-md text-sm font-medium">Education</a>
-                        </div>
-                    </div>
-                     <button id="theme-toggle" type="button" class="ml-4 flex-shrink-0 p-2 rounded-md text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-700 focus:outline-none">
-                        <svg id="theme-icon-light" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                        </svg>
-                        <svg id="theme-icon-dark" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                        </svg>
-                    </button>
-                    <div class="-mr-2 flex md:hidden">
-                        <button id="mobile-menu-button" type="button" class="ml-2 bg-stone-200 dark:bg-stone-800 inline-flex items-center justify-center p-2 rounded-md text-stone-600 dark:text-stone-400 hover:text-teal-600 dark:hover:text-teal-500 hover:bg-stone-300 dark:hover:bg-stone-700 focus:outline-none" aria-controls="mobile-menu" aria-expanded="false">
-                            <span class="sr-only">Open main menu</span>
-                            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                            </svg>
-                            <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </nav>
-        <div class="md:hidden hidden" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#summary" class="nav-link text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-800 block px-3 py-2 rounded-md text-base font-medium">Summary</a>
-                <a href="#skills" class="nav-link text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-800 block px-3 py-2 rounded-md text-base font-medium">Skills</a>
-                <a href="#experience" class="nav-link text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-800 block px-3 py-2 rounded-md text-base font-medium">Experience</a>
-                <a href="#education" class="nav-link text-stone-600 dark:text-stone-400 hover:bg-stone-200 dark:hover:bg-stone-800 block px-3 py-2 rounded-md text-base font-medium">Education</a>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-
-        <section id="summary" class="text-center py-16">
-            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-stone-900 dark:text-stone-100">Principal Software Engineer</h1>
-            <p class="mt-6 max-w-3xl mx-auto text-lg text-stone-600 dark:text-stone-400">
-                Results-driven engineer who thrives on transforming ambiguous ideas into market-ready, multi-tenant SaaS platforms. Proven track record of leading specialized teams on mission-critical initiatives and greenfield projects on AWS and Azure, from initial concept and architecture through to deployment. Specializes in pioneering cloud-native solutions, shaping enterprise technical strategy, and championing the adoption of cutting-edge technologies like generative AI and modern CI/CD practices.
-            </p>
-        </section>
-        
-        <section id="skills" class="py-16">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-100">Technical Skills</h2>
-                <p class="mt-4 max-w-2xl mx-auto text-md text-stone-600 dark:text-stone-400">This section provides an overview of my core technical competencies, from languages and cloud platforms to the frameworks and tools I use to build robust, scalable applications. The chart visualizes my relative proficiency across key software engineering domains, reflecting a deep expertise in cloud and DevOps complemented by strong full-stack capabilities.</p>
-            </div>
-            <div class="chart-container mb-12">
-                <canvas id="skillsChart"></canvas>
-            </div>
-            <div id="skills-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+        <section>
+            <h2>Summary</h2>
+            <p style="font-size:0.95rem;">Product-minded full-stack engineer who builds complex data platforms that feel simple to use. Strongest in the TypeScript ecosystem (Next.js, NestJS, React, Angular) on AWS, with deep experience in infrastructure-as-code, event-driven architecture, and multi-tenant SaaS design. Track record of leading small teams from architecture through delivery on complex platforms, championing enterprise-wide technical practices, and bridging the gap between engineering and business stakeholders.</p>
         </section>
 
-        <section id="experience" class="py-16">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-100">Professional Experience</h2>
-                <p class="mt-4 max-w-2xl mx-auto text-md text-stone-600 dark:text-stone-400">My career has been a journey of tackling progressively complex challenges. This interactive timeline highlights key roles and accomplishments. Click on any position to expand the details and see how I've delivered value, driven innovation, and led teams to build impactful solutions.</p>
+        <section>
+            <h2>Technical Skills</h2>
+            <dl class="skills-grid">
+                <dt>Languages</dt>
+                <dd>TypeScript, JavaScript, SQL, Terraform (HCL), C#</dd>
+                <dt>Frameworks &amp; Libraries</dt>
+                <dd>Next.js, NestJS, Angular, React, .NET</dd>
+                <dt>Cloud &amp; Infrastructure</dt>
+                <dd>AWS (EventBridge, SQS, RDS, Lambda, ECS, Cognito), Azure (Function Apps, App Service, AI Services), Terraform, Docker, AI-Assisted Development (GitHub Copilot, Claude, OpenCode)</dd>
+                <dt>Databases</dt>
+                <dd>PostgreSQL, DynamoDB, Cosmos DB</dd>
+            </dl>
+        </section>
+
+        <section>
+            <h2>Professional Experience</h2>
+
+            <div class="job">
+                <h3>Technical Lead / Principal Software Engineer, MSO &amp; Innovation</h3>
+                <div class="job-meta">Excellus BCBS | Remote</div>
+                <div class="job-date">December 2020 &ndash; Present</div>
+                <ul>
+                    <li>Led end-to-end creation of the Payment Integrity eXaminer (PIX), a multi-tenant SaaS platform on AWS, from initial architecture through production deployment with a small, focused team.</li>
+                    <li>Designed and built a graph-based "concept builder" enabling business users to construct complex structured queries through a point-and-click interface, reducing analysis feedback loops from 4–8 weeks to minutes.</li>
+                    <li>Owned full infrastructure architecture using Terraform: event-driven data ingestion (EventBridge, SQS, Lambda), multi-tenant authentication via Cognito, and flexible tenancy patterns supporting pool, hybrid, and silo deployments.</li>
+                    <li>Advocated for PostgreSQL over DynamoDB after identifying OLAP workload requirements incompatible with the original enterprise-directed architecture, unlocking query flexibility critical to the platform's core product.</li>
+                    <li>Established front-end architecture standards and converted siloed specialists into full-stack developers across two teams (5 engineers) on the Rx Clinical Concierge pharmacy SaaS platform.</li>
+                    <li>Pioneered enterprise adoption of trunk-based development and feature flags — authored organizational standards, built custom flag infrastructure on Azure App Config, and delivered shared libraries for .NET and Angular.</li>
+                    <li>Championed company-wide adoption of GitHub Copilot as the organization's first approved generative AI tool, driving the POC and engaging security architects and C-suite stakeholders from pilot to full rollout.</li>
+                </ul>
             </div>
-            <div id="timeline-container" class="relative border-l-2 border-stone-200 dark:border-stone-700 ml-6">
+
+            <div class="job">
+                <h3>Senior Software Engineer</h3>
+                <div class="job-meta">Excellus BCBS | Dewitt, NY</div>
+                <div class="job-date">October 2018 &ndash; February 2020</div>
+                <ul>
+                    <li>Built an internal HR application end-to-end, replacing a fragmented manual process (spreadsheets, emails, legacy forms) with automated paid family leave management and delivering the organization's first direct programmatic integration with UKG and UltiPro APIs.</li>
+                    <li>Reduced new developer onboarding from 8–12 weeks to under 3 hours by containerizing the local development environment and hosting images on an internal repository, benefiting a team of ~75 developers.</li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <h3>Software Engineer</h3>
+                <div class="job-meta">Luminous Residential | Remote</div>
+                <div class="job-date">March 2020 &ndash; August 2020</div>
+                <ul>
+                    <li>Co-developed and rapidly launched "Amenity Boss" during a COVID-driven business pivot, building onboarding automation that helped scale the customer base and recurring revenue significantly.</li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <h3>Software Engineer</h3>
+                <div class="job-meta">Benchmark Media Systems | Syracuse, NY</div>
+                <div class="job-date">August 2020 &ndash; December 2020</div>
+                <ul>
+                    <li>Consolidated two related product codebases into a single modular system and automated the software build process for a new hardware product line.</li>
+                </ul>
+            </div>
+
+            <div class="job">
+                <h3>Software Engineer</h3>
+                <div class="job-meta">SRC, Inc. | North Syracuse, NY</div>
+                <div class="job-date">January 2018 &ndash; October 2018</div>
+                <ul>
+                    <li>Built a standalone desktop application (JavaFX) for a proprietary chemical hazard prediction model, plus a batch testing tool that significantly reduced model validation time.</li>
+                </ul>
             </div>
         </section>
 
-        <section id="education" class="py-16">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold tracking-tight text-stone-900 dark:text-stone-100">Education</h2>
-                <p class="mt-4 max-w-2xl mx-auto text-md text-stone-600 dark:text-stone-400">My formal education provided the foundational knowledge in computer science and critical thinking that underpins my technical career.</p>
+        <section>
+            <h2>Education</h2>
+            <div class="edu">
+                <div class="edu-degree">B.S. Computer Science</div>
+                <div class="edu-meta">Oregon State University, 2016 &ndash; 2017</div>
             </div>
-            <div id="education-container" class="max-w-2xl mx-auto space-y-6"></div>
+            <div class="edu">
+                <div class="edu-degree">B.A. Philosophy &amp; Religious Studies</div>
+                <div class="edu-meta">Roberts Wesleyan College, 2013 &ndash; 2015</div>
+            </div>
         </section>
-    </main>
 
-    <footer class="bg-stone-200 dark:bg-stone-800">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center text-sm text-stone-500 dark:text-stone-400">
-            <p>Joseph A Pfohl | Fabius, NY 13063 | 315-391-0190 | joepfohl@gmail.com</p>
-        </div>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const resumeData = {
-                skills: [
-                    {
-                        category: "Languages",
-                        items: ["TypeScript", "JavaScript", "C#", "Java", "C++", "Python", "Bash", "SQL", "Terraform (HCL)"]
-                    },
-                    {
-                        category: "Frameworks & Libraries",
-                        items: ["Next.js", "NestJS", "Angular", "React", "Spring MVC", ".NET"]
-                    },
-                    {
-                        category: "Cloud & DevOps",
-                        items: ["AWS (EventBridge, SQS, RDS, DynamoDB, Lambda, etc.)", "Azure (Function Apps, App Service, AI Services, Cosmos DB)", "Azure DevOps (YAML Pipelines)", "Terraform", "Git", "GitHub Copilot", "Feature Flags"]
-                    },
-                    {
-                        category: "Databases",
-                        items: ["PostgreSQL", "MySQL", "DynamoDB", "Cosmos DB"]
-                    }
-                ],
-                skillProficiency: {
-                    labels: ["Cloud & DevOps", "Strategy & Leadership", "Frontend", "Backend", "Databases"],
-                    scores: [90, 92, 90, 88, 85]
-                },
-                experience: [
-                    {
-                        company: "Excellus BCBS",
-                        location: "Dewitt, NY / Remote",
-                        title: "Technical Lead, MSO & Innovation",
-                        dates: "December 2020 - Present",
-                        points: [
-                            "Selected to lead a specialized engineering team tasked with solving the company's most complex, ambiguous, and mission-critical challenges, transforming nascent business concepts into profitable, revenue-generating SaaS products.",
-                            "Led the end-to-end creation of the Payment Integrity eXaminer (PIX) platform, a greenfield, multi-tenant SaaS solution built on AWS. Drove the project from initial ideation and requirements gathering directly with business stakeholders to final architecture and launch.",
-                            "Architected and personally developed significant portions of the full-stack solution, utilizing TypeScript with Next.js (front-end) and NestJS (data ingestion), and managed all AWS infrastructure as code with Terraform.",
-                            "Engineered an innovative \"point-and-click\" data exploration interface, empowering non-technical users to design complex data workflows without needing to write SQL.",
-                            "Championed and authored the enterprise strategy for the responsible use of AI by developers, leading to the company-wide adoption of GitHub Copilot.",
-                            "Pioneered the organization's first adoption of feature flags and established the new enterprise standard for CI/CD, defining best practices for branching, automated testing, and deployment pipelines.",
-                            "Re-architected a core document generation service for the \"Pharmacy Concierge\" platform, significantly increasing flexibility and speed-to-market for new customer communications."
-                        ]
-                    },
-                    {
-                        company: "Benchmark Media Systems, Inc.",
-                        location: "Syracuse, NY",
-                        title: "Software Engineer",
-                        dates: "August 2020 - December 2020",
-                        points: [
-                            "Increased the reliability of the company's key codebase by consolidating two related codebases into a single, modular, and maintainable unit.",
-                            "Automated several business-critical software components, including internal ERP servers and the software build process, leading to greater reliability and reduced build times."
-                        ]
-                    },
-                    {
-                        company: "Luminous Residential",
-                        location: "Cazenovia, NY / Remote",
-                        title: "Software Engineer",
-                        dates: "March 2020 - August 2020",
-                        points: [
-                            "Rapidly co-developed and launched \"Amenity Boss,\" an innovative web application created in direct response to the COVID-1 crisis, contributing to a 150% customer growth and a 300% increase in monthly recurring revenue.",
-                            "Developed key infrastructure components that enabled the company to scale onboarding operations by over 500% during peak launch weeks."
-                        ]
-                    },
-                    {
-                        company: "Excellus BCBS",
-                        location: "Dewitt, NY",
-                        title: "Senior Software Engineer",
-                        dates: "October 2018 - February 2020",
-                        points: [
-                            "Saved the organization an estimated $300,000 annually by architecting, designing, and leading the development of the NYPFL Maintenance internal application.",
-                            "Reduced new developer onboarding time by an estimated 4 weeks by collaborating with the DevOps team to create a user-friendly onboarding process."
-                        ]
-                    },
-                    {
-                        company: "SRC, Inc.",
-                        location: "North Syracuse, NY",
-                        title: "Software Engineer",
-                        dates: "January 2018 - October 2018",
-                        points: [
-                            "Designed, developed, and deployed a JavaFX GUI for a proprietary hazard prediction model for chemical threats (DREAM).",
-                            "Significantly decreased model validation and verification time by implementing a batch testing tool."
-                        ]
-                    }
-                ],
-                education: [
-                    {
-                        institution: "Oregon State University",
-                        location: "Corallis, OR",
-                        degree: "B.S. Computer Science",
-                        dates: "August 2016 - November 2017"
-                    },
-                    {
-                        institution: "Roberts Wesleyan College",
-                        location: "Rochester, NY",
-                        degree: "B.A. Philosophy & Religious Studies",
-                        dates: "July 2013 - November 2015"
-                    }
-                ]
-            };
-
-            const skillsListContainer = document.getElementById('skills-list');
-            resumeData.skills.forEach(skillCategory => {
-                const categoryDiv = document.createElement('div');
-                categoryDiv.className = 'bg-white dark:bg-stone-800 p-6 rounded-lg shadow-sm';
-                let itemsHtml = skillCategory.items.map(item => `<li class="text-stone-600 dark:text-stone-400">${item}</li>`).join('');
-                categoryDiv.innerHTML = `
-                    <h3 class="text-lg font-semibold text-stone-800 dark:text-stone-200 mb-3">${skillCategory.category}</h3>
-                    <ul class="space-y-2 list-disc list-inside">${itemsHtml}</ul>
-                `;
-                skillsListContainer.appendChild(categoryDiv);
-            });
-
-            const timelineContainer = document.getElementById('timeline-container');
-            resumeData.experience.forEach((job, index) => {
-                const itemDiv = document.createElement('div');
-                itemDiv.className = 'timeline-item mb-8 pl-12 cursor-pointer group';
-                const pointsHtml = job.points.map(point => `<li class="mb-2 text-stone-600 dark:text-stone-400">${point}</li>`).join('');
-                itemDiv.innerHTML = `
-                    <div class="absolute -left-3.5 mt-1.5 h-6 w-6 rounded-full border-4 timeline-dot bg-stone-100 dark:bg-stone-900 border-teal-600 dark:border-teal-500"></div>
-                    <div class="timeline-item-header">
-                        <time class="mb-1 text-sm font-normal leading-none text-stone-400 dark:text-stone-500">${job.dates}</time>
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h3 class="text-xl font-semibold text-stone-900 dark:text-stone-100">${job.title}</h3>
-                                <p class="text-md font-medium text-stone-500 dark:text-stone-400">${job.company} | ${job.location}</p>
-                            </div>
-                            <span class="timeline-indicator text-teal-600 dark:text-teal-500 text-3xl font-light leading-none mr-2 mt-1 transition-transform transform group-hover:scale-110">+</span>
-                        </div>
-                    </div>
-                    <div class="timeline-item-content pt-4">
-                        <ul class="list-disc list-inside space-y-2">${pointsHtml}</ul>
-                    </div>
-                `;
-                timelineContainer.appendChild(itemDiv);
-            });
-
-            document.querySelectorAll('.timeline-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const indicator = item.querySelector('.timeline-indicator');
-                    item.classList.toggle('active');
-                    if (item.classList.contains('active')) {
-                        indicator.textContent = '−';
-                        item.querySelector('.timeline-dot').classList.add('bg-teal-600', 'dark:bg-teal-500');
-                    } else {
-                        indicator.textContent = '+';
-                        item.querySelector('.timeline-dot').classList.remove('bg-teal-600', 'dark:bg-teal-500');
-                    }
-                });
-            });
-            
-            const educationContainer = document.getElementById('education-container');
-            resumeData.education.forEach(edu => {
-                const eduDiv = document.createElement('div');
-                eduDiv.className = 'bg-white dark:bg-stone-800 p-6 rounded-lg shadow-sm';
-                eduDiv.innerHTML = `
-                    <h3 class="text-lg font-semibold text-stone-800 dark:text-stone-200">${edu.degree}</h3>
-                    <p class="text-md text-teal-700 dark:text-teal-500 font-medium">${edu.institution}, ${edu.location}</p>
-                    <p class="text-sm text-stone-500 dark:text-stone-400">${edu.dates}</p>
-                `;
-                educationContainer.appendChild(eduDiv);
-            });
-
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-                mobileMenuButton.querySelector('svg:first-child').classList.toggle('hidden');
-                mobileMenuButton.querySelector('svg:last-child').classList.toggle('hidden');
-            });
-            
-            document.querySelectorAll('#mobile-menu .nav-link').forEach(link => {
-                link.addEventListener('click', () => {
-                    if (!mobileMenu.classList.contains('hidden')) {
-                         mobileMenuButton.click();
-                    }
-                })
-            })
-
-            const themeToggleButton = document.getElementById('theme-toggle');
-            const lightIcon = document.getElementById('theme-icon-light');
-            const darkIcon = document.getElementById('theme-icon-dark');
-
-            const setDarkMode = (isDark) => {
-                if (isDark) {
-                    document.documentElement.classList.add('dark');
-                    lightIcon.classList.add('hidden');
-                    darkIcon.classList.remove('hidden');
-                    localStorage.theme = 'dark';
-                } else {
-                    document.documentElement.classList.remove('dark');
-                    lightIcon.classList.remove('hidden');
-                    darkIcon.classList.add('hidden');
-                    localStorage.theme = 'light';
-                }
-                updateChartTheme(isDark);
-            };
-
-            themeToggleButton.addEventListener('click', () => {
-                setDarkMode(!document.documentElement.classList.contains('dark'));
-            });
-
-            const updateChartTheme = (isDark) => {
-                if (skillsChart) {
-                    const gridColor = isDark ? 'rgba(68, 64, 60, 0.3)' : 'rgba(214, 211, 209, 0.3)';
-                    const tickColor = isDark ? '#d6d3d1' : '#292524';
-                    skillsChart.options.scales.x.grid.color = gridColor;
-                    skillsChart.options.scales.y.grid.color = gridColor;
-                    skillsChart.options.scales.x.ticks.color = tickColor;
-                    skillsChart.options.scales.y.ticks.color = tickColor;
-                    skillsChart.update();
-                }
-            };
-            
-            const initialThemeIsDark = localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
-
-            const chartOptions = {
-                indexAxis: 'y',
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        beginAtZero: true,
-                        max: 100,
-                        grid: { color: initialThemeIsDark ? 'rgba(68, 64, 60, 0.3)' : 'rgba(214, 211, 209, 0.3)' },
-                        ticks: { color: initialThemeIsDark ? '#d6d3d1' : '#292524' }
-                    },
-                    y: {
-                        grid: { display: false },
-                        ticks: { color: initialThemeIsDark ? '#d6d3d1' : '#292524' }
-                    }
-                },
-                plugins: {
-                    legend: { display: false },
-                    tooltip: {
-                        callbacks: {
-                            label: (context) => `${context.dataset.label}: ${context.raw}%`
-                        }
-                    }
-                }
-            };
-
-            const ctx = document.getElementById('skillsChart').getContext('2d');
-            const skillsChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: resumeData.skillProficiency.labels,
-                    datasets: [{
-                        label: 'Proficiency',
-                        data: resumeData.skillProficiency.scores,
-                        backgroundColor: 'rgba(13, 148, 136, 0.6)',
-                        borderColor: 'rgba(15, 118, 110, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: chartOptions
-            });
-
-            setDarkMode(initialThemeIsDark);
-        });
-    </script>
+        <footer>
+            <a href="mailto:joepfohl@gmail.com">joepfohl@gmail.com</a>
+        </footer>
+    </div>
 </body>
 </html>
-
