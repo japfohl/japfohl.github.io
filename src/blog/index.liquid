@@ -1,0 +1,41 @@
+---
+layout: base.liquid
+pageTitle: Blog
+---
+
+<section class="blog-listing">
+  <h1>Blog</h1>
+
+  {% assign posts = collections.posts | reverse %}
+  {% if posts.size > 0 %}
+    {% for post in posts %}
+      <article class="post-card">
+        <header class="post-card-header">
+          <h2><a href="{{ post.url }}">{{ post.data.title }}</a></h2>
+          <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: "%B %d, %Y" }}</time>
+        </header>
+
+        {% if post.data.description %}
+          <p>{{ post.data.description }}</p>
+        {% else %}
+          <p>{{ post.templateContent | strip_html | truncatewords: 30 }}</p>
+        {% endif %}
+
+        {% assign has_real_tags = false %}
+        {% for tag in post.data.tags %}{% if tag != "posts" %}{% assign has_real_tags = true %}{% endif %}{% endfor %}
+
+        {% if has_real_tags %}
+          <footer class="post-card-tags">
+            {% for tag in post.data.tags %}
+              {% if tag != "posts" %}
+                <a href="/tags/{{ tag | slugify }}/" class="tag">#{{ tag }}</a>
+              {% endif %}
+            {% endfor %}
+          </footer>
+        {% endif %}
+      </article>
+    {% endfor %}
+  {% else %}
+    <p class="empty-state">Nothing here yet — check back soon.</p>
+  {% endif %}
+</section>

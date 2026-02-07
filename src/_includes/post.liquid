@@ -1,0 +1,25 @@
+---
+layout: base.liquid
+---
+
+<article class="post">
+  <header class="post-header">
+    <h1>{{ title }}</h1>
+    <time datetime="{{ date | date: '%Y-%m-%d' }}">{{ date | date: "%B %d, %Y" }}</time>
+    {% assign has_real_tags = false %}
+    {% for tag in tags %}{% if tag != "posts" %}{% assign has_real_tags = true %}{% endif %}{% endfor %}
+    {% if has_real_tags %}
+      <div class="post-tags">
+        {% for tag in tags %}
+          {% if tag != "posts" %}
+            <a href="/tags/{{ tag | slugify }}/" class="tag">#{{ tag }}</a>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </header>
+
+  <div class="post-content">
+    {{ content }}
+  </div>
+</article>

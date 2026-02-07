@@ -1,0 +1,32 @@
+---
+pagination:
+  data: collections
+  size: 1
+  alias: tag
+  filter:
+    - all
+    - posts
+  addAllPagesToCollections: false
+layout: base.liquid
+eleventyComputed:
+  pageTitle: "Tagged: {{ tag }}"
+permalink: /tags/{{ tag | slugify }}/
+---
+
+<section class="blog-listing">
+  <h1>Posts tagged &ldquo;{{ tag }}&rdquo;</h1>
+  <p><a href="/blog/">&larr; All posts</a></p>
+
+  {% assign tagPosts = collections[tag] | reverse %}
+  {% for post in tagPosts %}
+    <article class="post-card">
+      <header class="post-card-header">
+        <h2><a href="{{ post.url }}">{{ post.data.title }}</a></h2>
+        <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: "%B %d, %Y" }}</time>
+      </header>
+      {% if post.data.description %}
+        <p>{{ post.data.description }}</p>
+      {% endif %}
+    </article>
+  {% endfor %}
+</section>
