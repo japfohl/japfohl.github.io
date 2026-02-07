@@ -1,11 +1,17 @@
 ---
 layout: base.liquid
 ---
-
 <section class="hero">
   <h1>Hey, I'm Joe.</h1>
-  <p>I'm a software engineer in upstate New York. I've been building for the web for a while now and it still feels like magic to me — especially the moment someone uses a thing I built and says, "Wait! I didn't know you could do that."</p>
-  <p>When I'm not writing code, I'm probably chasing my kids around or tinkering with a side project. This is where I write about what I'm building and what I'm figuring out.</p>
+  <p>
+    I'm a software engineer in upstate New York. I've been building software for almost a decade and it still feels like
+    magic to me. I especially love the moment when someone uses something I've built and says, "Wait! I didn't know you
+    could do that."
+  </p>
+  <p>
+    When I'm not writing code, I'm probably chasing my kids around or tinkering with a side project. This is where I
+    write about what I'm building and what I'm figuring out.
+  </p>
 </section>
 
 <section class="home-section">
@@ -15,7 +21,7 @@ layout: base.liquid
     {% for post in recent limit: 5 %}
       <article class="post-preview">
         <a href="{{ post.url }}">{{ post.data.title }}</a>
-        <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: "%B %d, %Y" }}</time>
+        <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: '%B %d, %Y' }}</time>
       </article>
     {% endfor %}
   {% else %}
